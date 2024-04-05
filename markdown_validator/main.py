@@ -9,11 +9,11 @@ from MarkdownTools import markdown_validation_tool
 
 load_dotenv()
 
-defalut_llm = ChatOpenAI(openai_api_base=os.environ.get("OPENAI_API_BASE_URL", "https://api.openai.com/v1"),
-                        openai_api_key=os.environ.get("OPENAI_API_KEY"),
-                        temperature=0.1,                        
-                        model_name=os.environ.get("MODEL_NAME", "gpt-3.5-turbo"),
-                        top_p=0.3)
+# defalut_llm = ChatOpenAI(openai_api_base=os.environ.get("OPENAI_API_BASE_URL", "https://api.openai.com/v1"),
+#                         openai_api_key=os.environ.get("OPENAI_API_KEY"),
+#                         temperature=0.1,                        
+#                         model_name=os.environ.get("MODEL_NAME", "gpt-3.5-turbo"),
+#                         top_p=0.3)
 
 
 
@@ -45,8 +45,7 @@ def process_markdown_document(filename):
                     detailed list of changes and actionable tasks.""",
                     allow_delegation=False, 
                     verbose=True,
-                    tools=[markdown_validation_tool],
-                    llm=defalut_llm)
+                    tools=[markdown_validation_tool])
 
 
     # Define Tasks Using Crew Tools
@@ -70,7 +69,8 @@ def process_markdown_document(filename):
 			
 			If you already know the answer or if you do not need 
 			to use a tool, return it as your Final Answer.""",
-            agent=general_agent)
+            agent=general_agent,expected_output="YOUR FINAL ANSWER HERE")
+    
     
     updated_markdown = syntax_review_task.execute()
 
